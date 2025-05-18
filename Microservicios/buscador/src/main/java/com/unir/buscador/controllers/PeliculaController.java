@@ -35,7 +35,7 @@ public class PeliculaController {
         return peliculaService.obtenerPeliculaId(id);
     }
 
-    // http://localhost:9999/servicio/nombre?nombre=
+    // http://localhost:9999/pelicula/nombre?nombre=
     @GetMapping("/nombre")
     public Pelicula obtenerPeliculaNombre(@RequestParam String name) {
         System.out.println("REQUEST: " + name);
