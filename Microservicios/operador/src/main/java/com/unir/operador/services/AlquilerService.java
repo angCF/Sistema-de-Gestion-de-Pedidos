@@ -32,7 +32,7 @@ public class AlquilerService {
         Alquiler nuevoAlquiler = new Alquiler();
         AlquilerResponse response = new AlquilerResponse();
         Pelicula pelicula = consultarPelicula(request.getIdPelicula());
-        if(pelicula==null){
+        if(pelicula==null || pelicula.getDisponibilidad()==false){
             return null;
         }
 

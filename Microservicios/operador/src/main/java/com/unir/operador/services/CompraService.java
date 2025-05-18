@@ -32,7 +32,7 @@ public class CompraService {
         Compra nuevaCompra = new Compra();
         CompraResponse response = new CompraResponse();
         Pelicula pelicula = consultarPelicula(request.getIdPelicula());
-        if(pelicula==null){
+        if(pelicula==null || pelicula.getDisponibilidad()==false){
             //throw new PeliculaNoEncontradaException("Película no encontrada");
             return null;
         }
