@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class Alquiler {
+    private Long  id;
     private Long idPelicula;
     private String nombreUsuario;            
     private BigDecimal precioAlquiler;   

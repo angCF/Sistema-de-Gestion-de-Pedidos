@@ -2,9 +2,14 @@ package com.unir.operador.models;
 
 import java.math.BigDecimal;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 public class Pelicula {
     private Long id;
     private String nombre;

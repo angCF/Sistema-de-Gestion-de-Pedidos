@@ -3,8 +3,8 @@ package com.unir.operador.services;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
+//import org.springframework.boot.web.client.RestTemplateBuilder;
+//import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,19 +14,22 @@ import com.unir.operador.dto.AlquilerResponse;
 import com.unir.operador.models.Alquiler;
 import com.unir.operador.models.Pelicula;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class AlquilerService {
-    @Autowired
+  
     private Environment environment;
 
-    @Autowired
-    private RestTemplate restTemplate;
+  
+    private final RestTemplate restTemplate;
 
-    
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
-    }
+
+    //@Bean
+    //public RestTemplate restTemplate(RestTemplateBuilder builder) {
+      //  return builder.build();
+    //}
    
     public AlquilerResponse crearAlquiler(AlquilerRequest request){
         Alquiler nuevoAlquiler = new Alquiler();
@@ -36,6 +39,7 @@ public class AlquilerService {
             return null;
         }
 
+        nuevoAlquiler.setId(null);
         nuevoAlquiler.setIdPelicula(request.getIdPelicula());
         nuevoAlquiler.setNombreUsuario(request.getNombreUsuario());
         nuevoAlquiler.setPrecioAlquiler(pelicula.getPrecioAlquiler());
@@ -56,7 +60,6 @@ public class AlquilerService {
     //Evaluar crear en Utils
     public Pelicula consultarPelicula(Long id){
         Pelicula pelicula;
-        RestTemplate restTemplate = null;
         pelicula = restTemplate.getForObject(environment.getProperty("urlBuscador") + id, Pelicula.class);
         if(pelicula==null){
             return null;

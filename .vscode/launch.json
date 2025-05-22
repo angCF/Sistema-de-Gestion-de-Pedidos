@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-OperadorApplication<operador>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.unir.operador.OperadorApplication",
+            "projectName": "operador",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
