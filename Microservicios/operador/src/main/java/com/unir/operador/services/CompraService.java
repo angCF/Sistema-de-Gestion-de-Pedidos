@@ -74,16 +74,15 @@ public class CompraService {
             String errorMessage = "La película con ID " + id + " no fue encontrada.";
             logger.severe(errorMessage);
             throw new PeliculaNoEncontradaException(errorMessage, e);
-        } catch (RestClientException e) {
+        } /*catch (HttpClientErrorException. e){
+            String errorMessage = "El servidor de productos no está disponible.";
+            logger.severe(errorMessage);
+            throw new PeliculaNoEncontradaException(errorMessage, e);
+        } */
+       catch (RestClientException e) {
             logger.severe("Error al consultar la película con ID " + id + ": " + e.getMessage());
             throw new PeliculaNoEncontradaException("No se pudo obtener la película con ID: " + id, e);
         }
         return pelicula;
-    }
-
-    public static class PeliculaNoEncontradaException extends RuntimeException {
-        public PeliculaNoEncontradaException(String message, Throwable cause) {
-            super(message, cause);
-        }
     }
 }
