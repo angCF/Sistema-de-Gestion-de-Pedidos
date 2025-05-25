@@ -1,8 +1,13 @@
-package com.unir.eureka;
+package com.unir.orden;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EurekaApplicationTests {
+class OrdenApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
 }

@@ -1,0 +1,54 @@
+services:
+    eureka:
+        build: ./Gateway/eureka
+        container_name: eureka
+        networks:
+            mynet1:
+                ipv4_address: 172.28.0.2
+        ports:
+            - 8761:8761
+
+    productos:
+        build: ./Microservicios/producto
+        container_name: producto
+        networks:
+            mynet1:
+                ipv4_address: 172.28.0.5
+        environment:
+            - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/movie_now
+            - SPRING_DATASOURCE_USERNAME=root
+            - SPRING_DATASOURCE_PASSWORD=rootpassword
+        depends_on:
+            - eureka
+            - mysql-db  # Espera a que la base de datos MySQL esté lista antes de arrancar el servicio
+
+    mysql-db:
+        image: mysql:8.0
+        container_name: mysql-db
+        networks:
+            mynet1:
+                ipv4_address: 172.28.0.10
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpassword
+            MYSQL_DATABASE: movie_now  # El nombre de la base de datos que quieres crear
+        volumes:
+            - mysql-data:/var/lib/mysql  # Para persistir los datos
+        ports:
+            - "3307:3307"
+
+networks:
+    default:
+        name: mynet
+        driver: bridge
+    mynet1:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.28.0.0/24
+                  gateway: 172.28.0.1
+
+volumes:
+    mysql-data:  # Este volumen se usa para persistir la base de datos entre reinicios
+      driver: local
