@@ -17,8 +17,8 @@ import com.unir.buscador.model.Pelicula;
 import com.unir.buscador.services.PeliculaService;
 
 @RestController
-@RequestMapping("/pelicula")
-public class PeliculaController {
+@RequestMapping("/producto")
+public class ProductoController {
     @Autowired
     Environment environment;
 
@@ -42,18 +42,18 @@ public class PeliculaController {
         return peliculaService.obtenerPeliculaNombre(name);
     }
 
-    @PostMapping("/agregar/pelicula")
+    @PostMapping()
     public Pelicula agregarPelicula(@RequestBody Pelicula pelicula) {
         return peliculaService.agregarPelicula(pelicula);
     }
 
-    @PutMapping("/actualizar/pelicula/{id}")
+    @PutMapping("/{id}")
     public Pelicula actualizaPelicula(@PathVariable Long id, @RequestBody Pelicula nuevaPelicula) {
         Pelicula pelicula = peliculaService.obtenerPeliculaId(id);
         return peliculaService.agregarPelicula(pelicula);
     }
 
-    @DeleteMapping("/eliminar/pelicula/{id}")
+    @DeleteMapping("/{id}")
     public void eliminarPelicula(@PathVariable Long id) {
         peliculaService.eliminarPelicula(id);
     } 

@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-//@EnableDiscoveryClient
-public class OperadorApplication {
+@EnableDiscoveryClient
+public class OrdenApplication {
 
 	@Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
@@ -17,7 +17,7 @@ public class OperadorApplication {
     }
 
 	public static void main(String[] args) {
-		SpringApplication.run(OperadorApplication.class, args);
+		SpringApplication.run(OrdenApplication.class, args);
 	}
 
 }

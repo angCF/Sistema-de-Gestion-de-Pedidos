@@ -10,10 +10,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
 @Data
-
-public class CompraResponse {
-    private String nombrePelicula;
+public class OrdenResponse {
+    private Long numeroOrden;
+    private String nombreProducto;
+    private String numDocumentoComprador;
     private String nombreComprador;
+    private Integer cantidad;
     private BigDecimal precio;
     private LocalDate fechaCompra;
 

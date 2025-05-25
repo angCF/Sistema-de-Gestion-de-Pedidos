@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "EurekaApplication",
+            "request": "launch",
+            "mainClass": "com.unir.eureka.EurekaApplication",
+            "projectName": "eureka"
+        },
+        {
+            "type": "java",
+            "name": "OrdenApplication",
+            "request": "launch",
+            "mainClass": "com.unir.operador.OrdenApplication",
+            "projectName": "operador"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-OperadorApplication<operador>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
