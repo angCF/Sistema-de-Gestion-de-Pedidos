@@ -1,11 +1,31 @@
 services:
+    config:
+        build: ./Config/config-server
+        container_name: config
+        ports:
+            - 8888:8888
+        networks:
+            - 'mynet'
+ 
     eureka:
-        build: ./Gateway/eureka
+        build: ./Gateway/eureka-server
         container_name: eureka
         ports:
             - 8761:8761
         networks:
             - 'mynet'
+        depends_on:
+            - config
+    gateway:
+        build: ./Gateway/gateway-server
+        container_name: gateway
+        ports:
+            - 8080:8080
+        networks:
+            - 'mynet'
+        depends_on:
+            - config
+            - eureka
 
     ordenes:
         build: ./Microservicios/orden
@@ -18,7 +38,9 @@ services:
             - DATABASE_PASSWORD=apppass
         #    - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
         depends_on:
+            - config
             - eureka
+            - gateway
             - productos
             - mysql-db  # Espera a que la base de datos MySQL esté lista antes de arrancar el servicio
         networks:
@@ -35,7 +57,9 @@ services:
             - SPRING_DATASOURCE_USERNAME=root
             - SPRING_DATASOURCE_PASSWORD=rootpassword
         depends_on:
+            - config
             - eureka
+            - gateway
             - mysql-db-products  # Espera a que la base de datos MySQL esté lista antes de arrancar el servicio        
 
     mysql-db:
