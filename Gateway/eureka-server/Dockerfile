@@ -12,7 +12,7 @@ RUN mvn clean package -DskipTests
 RUN ls -la /app-src/target
 
 #Construye imagen final
-FROM openjdk:21 AS server
+FROM azul/zulu-openjdk-alpine:21 AS server
 ENV SERVER_PORT=8761
 EXPOSE ${SERVER_PORT}
 WORKDIR /

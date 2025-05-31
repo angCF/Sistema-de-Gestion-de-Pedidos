@@ -18,8 +18,16 @@ public class Producto {
   @Column(name = "id_producto")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  
+  @Column(name = "nombre", nullable = false)
   private String nombre;
+
+  @Column(name = "descripcion")
   private String descripcion;
-  private BigDecimal precio_venta;
+
+  @Column(name = "precio_venta", nullable = false)
+  private BigDecimal precioVenta;
+
+  @Column(name = "stock", nullable = false)
   private Short stock;
 }

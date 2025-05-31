@@ -1,5 +1,5 @@
 #!/bin/ash
-while ! nc -z eureka 8761 ; do
+while ! nc -z eureka-server 8761 ; do
     echo "Waiting for the Eureka Server"
     sleep 3
 done

@@ -34,7 +34,7 @@ public class ProductoService {
 
         producto.setNombre(newProducto.getNombre());
         producto.setDescripcion(newProducto.getDescripcion());
-        producto.setPrecio_venta(newProducto.getPrecio_venta());
+        producto.setPrecioVenta(newProducto.getPrecioVenta());
         producto.setStock(newProducto.getStock());
 
         return ProductoRepository.save(producto);

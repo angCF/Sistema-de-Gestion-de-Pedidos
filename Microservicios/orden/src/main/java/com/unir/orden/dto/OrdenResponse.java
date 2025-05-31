@@ -2,20 +2,24 @@ package com.unir.orden.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class OrdenResponse {
     private Long numeroOrden;
-    private String nombreProducto;
+    private List<ProductoRequest> productosOrden;
     private String numDocumentoComprador;
     private String nombreComprador;
-    private Integer cantidad;
     private BigDecimal precio;
     private LocalDate fechaCompra;
 
