@@ -47,7 +47,7 @@ public class OrdenService {
 
     public Orden obtenerOrdenId(Long id) {
         return ordenRepository.findById(id).orElseThrow(
-                () -> new ProductoNoEncontradoException("La orden con ID " + id + " no fue encontrado.", null));
+        () -> new ProductoNoEncontradoException("La orden con ID " + id + " no fue encontrada.", null));
     }
 
     public List<Orden> obtenerOrdenCliente(String cedula) {
@@ -93,7 +93,8 @@ public class OrdenService {
     }
 
     public Orden actualizarOrden(Long id, Orden newOrden) {
-        Orden orden = ordenRepository.findById(id).orElseThrow();
+        Orden orden = ordenRepository.findById(id).orElseThrow(
+                () -> new ProductoNoEncontradoException("La orden con ID " + id + " no fue encontrada.", null));
 
         orden.setNombreComprador(newOrden.getNombreComprador());
         orden.setNumDocumentoComprador(newOrden.getNumDocumentoComprador());

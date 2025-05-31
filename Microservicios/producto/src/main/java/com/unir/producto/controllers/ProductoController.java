@@ -53,7 +53,7 @@ public class ProductoController {
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarProducto(@PathVariable Long id) {
-        productoService.eliminarProducto(id);
+    public String eliminarProducto(@PathVariable Long id) {
+        return productoService.eliminarProducto(id);
     } 
 }

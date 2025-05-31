@@ -15,9 +15,11 @@ import com.unir.orden.models.Orden;
 import com.unir.orden.services.OrdenService;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController // Controlador REST que recibe y procesa peticiones
@@ -57,10 +59,25 @@ public class OrdenController {
             return ResponseEntity.ok(response);
         } catch (ProductoNoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (ProductoErrorServerException e){
+        } catch (ProductoErrorServerException e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
-        } catch (ProductoNoDisponibleException e){
+        } catch (ProductoNoDisponibleException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarOrden(@PathVariable Long id, @RequestBody Orden orden) {
+        try {
+            Orden nuevaOrden = ordenService.actualizarOrden(id, orden);
+            return ResponseEntity.ok(nuevaOrden);
+        } catch (ProductoNoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public String eliminarOrden(@PathVariable Long id) {
+        return ordenService.eliminarOrden(id);
     }
 }
