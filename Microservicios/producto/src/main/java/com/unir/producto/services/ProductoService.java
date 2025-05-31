@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.unir.producto.dto.ProductoDTO;
 import com.unir.producto.model.Producto;
 import com.unir.producto.repository.ProductoRepository;
 import com.unir.producto.exception.ProductoNoDisponibleException;
@@ -22,48 +21,42 @@ public class ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
 
-    public List<ProductoDTO> obtenerProductos() {
+    public List<Producto> obtenerProductos() {
         logger.info("Obteniendo todos los productos.");
-        return productoRepository.findAll().stream()
-                .map(this::convertirAProductoDTO)
-                .collect(Collectors.toList());
+        return productoRepository.findAll();
     }
 
-    public ProductoDTO obtenerProductoId(Long id) {
+    public Producto obtenerProductoId(Long id) {
         logger.info("Buscando producto con ID: " + id);
         Producto producto = productoRepository.findById(id).orElseThrow(
                 () -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado.", null));
-        return convertirAProductoDTO(producto);
+        return producto;
     }
 
-    public ProductoDTO obtenerProductoNombre(String nombre) {
+    public Producto obtenerProductoNombre(String nombre) {
         logger.info("Buscando producto con nombre: " + nombre);
-        Producto producto = productoRepository.findByNombre(nombre);
-        return convertirAProductoDTO(producto);
+        return productoRepository.findByNombre(nombre);
     }
 
-    public ProductoDTO agregarProducto(ProductoDTO dto) {
-        logger.info("Agregando nuevo producto: " + dto.getNombre());
-        Producto producto = convertirAProducto(dto);
-        validarProducto(producto);
-        Producto guardado = productoRepository.save(producto);
-        return convertirAProductoDTO(guardado);
+    public Producto agregarProducto(Producto producto) {
+        logger.info("Agregando nuevo producto: " + producto.getNombre());
+        // validarProducto(producto);
+        return productoRepository.save(producto);
     }
 
-    public ProductoDTO actualizarProducto(Long id, ProductoDTO dto) {
+    public Producto actualizarProducto(Long id, Producto prod) {
         logger.info("Actualizando producto con ID: " + id);
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado.", null));
 
-        validarProducto(convertirAProducto(dto));
+        // validarProducto(prod);
 
-        producto.setNombre(dto.getNombre());
-        producto.setDescripcion(dto.getDescripcion());
-        producto.setPrecioVenta(dto.getPrecioVenta());
-        producto.setStock(dto.getStock());
+        producto.setNombre(prod.getNombre());
+        producto.setDescripcion(prod.getDescripcion());
+        producto.setPrecioVenta(prod.getPrecioVenta());
+        producto.setStock(prod.getStock());
 
-        Producto actualizado = productoRepository.save(producto);
-        return convertirAProductoDTO(actualizado);
+        return productoRepository.save(producto);
     }
 
     public String eliminarProducto(Long id) {
@@ -90,7 +83,7 @@ public class ProductoService {
         }
     }
 
-    public ProductoDTO agregarStock(Long id, int cantidad) {
+    public Producto agregarStock(Long id, int cantidad) {
         logger.info("Agregando stock al producto con ID: " + id + ", cantidad: " + cantidad);
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado.", null));
@@ -101,10 +94,10 @@ public class ProductoService {
         }
 
         producto.setStock((short) (producto.getStock() + cantidad));
-        return convertirAProductoDTO(productoRepository.save(producto));
+        return productoRepository.save(producto);
     }
 
-    public ProductoDTO quitarStock(Long id, int cantidad) {
+    public Producto quitarStock(Long id, int cantidad) {
         logger.info("Quitando stock al producto con ID: " + id + ", cantidad: " + cantidad);
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado.", null));
@@ -120,26 +113,7 @@ public class ProductoService {
         }
 
         producto.setStock((short) (producto.getStock() - cantidad));
-        return convertirAProductoDTO(productoRepository.save(producto));
+        return productoRepository.save(producto);
     }
 
-    private ProductoDTO convertirAProductoDTO(Producto producto) {
-        return new ProductoDTO(
-                producto.getId(),
-                producto.getNombre(),
-                producto.getDescripcion(),
-                producto.getPrecioVenta(),
-                producto.getStock()
-        );
-    }
-
-    private Producto convertirAProducto(ProductoDTO dto) {
-        Producto producto = new Producto();
-        producto.setId(dto.getId());
-        producto.setNombre(dto.getNombre());
-        producto.setDescripcion(dto.getDescripcion());
-        producto.setPrecioVenta(dto.getPrecioVenta());
-        producto.setStock(dto.getStock());
-        return producto;
-    }
 }

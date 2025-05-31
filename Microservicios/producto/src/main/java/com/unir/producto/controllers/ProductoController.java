@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.unir.producto.dto.ProductoDTO;
+import com.unir.producto.model.Producto;
 import com.unir.producto.services.ProductoService;
 
 @RestController
@@ -25,37 +25,37 @@ public class ProductoController {
     private ProductoService productoService;
 
     @GetMapping()
-    public List<ProductoDTO> obtenerProductos() {
+    public List<Producto> obtenerProductos() {
         return productoService.obtenerProductos();
     }
 
     @GetMapping("/{id}")
-    public ProductoDTO obtenerProductoId(@PathVariable Long id) {
+    public Producto obtenerProductoId(@PathVariable Long id) {
         return productoService.obtenerProductoId(id);
     }
 
     @GetMapping("/nombre")
-    public ProductoDTO obtenerProductoNombre(@RequestParam String name) {
+    public Producto obtenerProductoNombre(@RequestParam String name) {
         return productoService.obtenerProductoNombre(name);
     }
 
     @PostMapping()
-    public ProductoDTO agregarProducto(@RequestBody ProductoDTO productoDTO) {
-        return productoService.agregarProducto(productoDTO);
+    public Producto agregarProducto(@RequestBody Producto Producto) {
+        return productoService.agregarProducto(Producto);
     }
 
     @PutMapping("/{id}")
-    public ProductoDTO actualizaProducto(@PathVariable Long id, @RequestBody ProductoDTO productoDTO) {
-        return productoService.actualizarProducto(id, productoDTO);
+    public Producto actualizaProducto(@PathVariable Long id, @RequestBody Producto Producto) {
+        return productoService.actualizarProducto(id, Producto);
     }
 
     @PatchMapping("/{id}/agregar-stock")
-    public ProductoDTO agregarStock(@PathVariable Long id, @RequestParam int cantidad) {
+    public Producto agregarStock(@PathVariable Long id, @RequestParam int cantidad) {
         return productoService.agregarStock(id, cantidad);
     }
 
     @PatchMapping("/{id}/quitar-stock")
-    public ProductoDTO quitarStock(@PathVariable Long id, @RequestParam int cantidad) {
+    public Producto quitarStock(@PathVariable Long id, @RequestParam int cantidad) {
         return productoService.quitarStock(id, cantidad);
     }
 
