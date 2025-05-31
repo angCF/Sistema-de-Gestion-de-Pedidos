@@ -16,6 +16,7 @@ services:
             - 'mynet'
         depends_on:
             - config
+
     gateway:
         build: ./Gateway/gateway-server
         container_name: gateway
@@ -24,12 +25,11 @@ services:
         networks:
             - 'mynet'
         depends_on:
-            - config
             - eureka
 
     ordenes:
         build: ./Microservicios/orden
-        #container_name: orden
+        container_name: ordenes
         ports:
           - "9060:9060"
         environment:
@@ -47,6 +47,7 @@ services:
             - 'mynet'
     productos:
         build: ./Microservicios/producto
+        container_name: productos
         ports:
           - "9070:9070"
         networks:
@@ -75,6 +76,7 @@ services:
             - "3306:3306"
         networks:
             - 'mynet'
+
     mysql-db-products:
         image: mysql:8.0
         networks:
