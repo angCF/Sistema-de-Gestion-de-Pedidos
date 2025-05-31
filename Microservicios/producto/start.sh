@@ -1,30 +1,19 @@
-#!/bin/bash
+#!/bin/sh
 
-# Espera hasta que ambos servicios (Eureka y MySQL) estén disponibles
-while true; do
-    # Comprobar si Eureka está disponible
-    if nc -z eureka-server 8761; then
-        echo "Eureka Server está disponible"
-    else
-        echo "Esperando a Eureka Server..."
-    fi
-
-    # Comprobar si MySQL está disponible
-    if nc -z mysql-db-products 3306; then
-        echo "MySQL está disponible"
-    else
-        echo "Esperando a MySQL..."
-    fi
-
-    # Si ambos servicios están disponibles, salimos del ciclo
-    if nc -z eureka-server 8761 && nc -z mysql-db-products 3306; then
-        echo "Eureka y MySQL están disponibles. Iniciando la aplicación..."
-        break
-    fi
-
-    # Espera antes de volver a comprobar
+# Esperar a que el Gateway esté disponible
+while ! nc -z gateway 8080; do
+    echo "Esperando a Gateway Server..."
     sleep 3
 done
+echo "✅ Gateway Server disponible."
 
-# Inicia la aplicación Spring Boot
+# Esperar a que la base de datos de productos esté disponible
+while ! nc -z mysql-db-products 3306; do
+    echo "Esperando a MySQL de productos..."
+    sleep 3
+done
+echo "✅ MySQL de productos disponible."
+
+# Iniciar la app
+echo "🚀 Todos los servicios están disponibles. Iniciando la aplicación de productos..."
 exec java -jar /app.jar

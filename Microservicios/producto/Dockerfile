@@ -1,11 +1,18 @@
 FROM maven AS build
+
 WORKDIR /app-src
-COPY src src
+
 COPY pom.xml .
+RUN mvn dependency:go-offline
 
-RUN mvn clean package
+COPY src src
+RUN mvn clean package -DskipTests
+RUN ls -la /app-src/target
 
-FROM khipu/openjdk17-alpine AS server
+#Construye imagen final
+FROM azul/zulu-openjdk-alpine:21 AS server
+RUN apk add --no-cache netcat-openbsd
+
 ENV SERVER_PORT=9070
 EXPOSE ${SERVER_PORT}
 WORKDIR /
@@ -13,7 +20,8 @@ WORKDIR /
 VOLUME /tmp
 COPY --from=build /app-src/target/app.jar .
 
-COPY start.sh .
+#Ejecuta la app
+COPY start.sh /start.sh
 RUN chmod +x start.sh
 
 ENTRYPOINT ["/start.sh"]
