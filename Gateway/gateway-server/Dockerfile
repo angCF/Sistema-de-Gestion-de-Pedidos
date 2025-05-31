@@ -11,7 +11,9 @@ RUN mvn clean package -DskipTests
 RUN ls -la /app-src/target
 
 #Construye imagen final
-FROM openjdk:21 AS server
+FROM azul/zulu-openjdk-alpine:21 AS server
+RUN apk add --no-cache netcat-openbsd
+
 ENV SERVER_PORT=8080
 EXPOSE ${SERVER_PORT}
 WORKDIR /
