@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController // Controlador REST que recibe y procesa peticiones
-@RequestMapping("/orden") // Endpoint de acceso
+@RequestMapping("/api/orden") // Endpoint de acceso
 @CrossOrigin(origins = "*") // Permite acceder desde cualquier IP a los endpoint
 public class OrdenController {
 
@@ -54,16 +54,18 @@ public class OrdenController {
 
     @PostMapping()
     public ResponseEntity<?> crearOrden(@RequestBody OrdenRequest request) {
-        try {
-            String response = ordenService.crearOrden(request);
-            return ResponseEntity.ok(response);
-        } catch (ProductoNoEncontradoException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (ProductoErrorServerException e) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
-        } catch (ProductoNoDisponibleException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+        String response = ordenService.crearOrden(request);
+        return ResponseEntity.ok(response);
+        /*
+         * } catch (ProductoNoEncontradoException e) {
+         * return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+         * } catch (ProductoErrorServerException e) {
+         * return
+         * ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+         * } catch (ProductoNoDisponibleException e) {
+         * return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+         * }
+         */
     }
 
     @PutMapping("/{id}")

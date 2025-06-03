@@ -4,27 +4,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductoNoEncontradoException.class)
-    public ResponseEntity<String> handleProductoNoEncontrado(ProductoNoEncontradoException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> handleProductoNoEncontrado(ProductoNoEncontradoException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(ex.getMessage());
     }
 
     @ExceptionHandler(ProductoValidadoException.class)
-    public ResponseEntity<String> handleProductoValidado(ProductoValidadoException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> handleProductoValidado(ProductoValidadoException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body( ex.getMessage());
     }
 
     @ExceptionHandler(ProductoNoDisponibleException.class)
-    public ResponseEntity<String> handleProductoNoDisponible(ProductoNoDisponibleException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    public ResponseEntity<?> handleProductoNoDisponible(ProductoNoDisponibleException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+        .body(ex.getMessage());
     }
 
-    // Genérico (opcional)
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneral(Exception ex) {
-        return new ResponseEntity<>("Error interno: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> handleGeneral(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body("Error interno:" + ex.getMessage());
     }
 }

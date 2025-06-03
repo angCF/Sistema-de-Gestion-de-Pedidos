@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class OrdenResponse {
     private Long numeroOrden;
-    private List<ProductoRequest> productosOrden;
+    private List<ProductoResponse> productosOrden;
     private String numDocumentoComprador;
     private String nombreComprador;
     private BigDecimal precio;

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.unir.orden.dto.ProductoRequest;
+import com.unir.orden.dto.ProductoResponse;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -34,7 +34,7 @@ public class Orden {
     
     @ElementCollection
     @CollectionTable(name = "ids_productos", joinColumns = @JoinColumn(name = "id_orden"))
-    private List<ProductoRequest> idProductos;
+    private List<ProductoResponse> idProductos;
 
     @Column(name = "num_documento_comprador", nullable = false)
     private String numDocumentoComprador;

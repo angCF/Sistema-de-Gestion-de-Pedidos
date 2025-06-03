@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Embeddable
 @Data
-public class ProductoRequest {
+public class ProductoResponse {
     private Long idProducto;
+    private String nombreProducto;
     private Integer cantidad;
 }
