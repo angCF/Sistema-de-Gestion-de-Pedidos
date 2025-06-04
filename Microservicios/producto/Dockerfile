@@ -9,18 +9,14 @@ COPY src src
 RUN mvn clean package -DskipTests
 RUN ls -la /app-src/target
 
-#Construye imagen final
 FROM azul/zulu-openjdk-alpine:21 AS server
 RUN apk add --no-cache netcat-openbsd
 
-#ENV SERVER_PORT=9070
-#EXPOSE ${SERVER_PORT}
 WORKDIR /
 
 VOLUME /tmp
 COPY --from=build /app-src/target/app.jar .
 
-#Ejecuta la app
 COPY start.sh /start.sh
 RUN chmod +x start.sh
 
