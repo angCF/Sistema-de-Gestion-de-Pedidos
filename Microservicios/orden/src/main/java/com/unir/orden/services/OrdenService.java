@@ -16,6 +16,7 @@ import com.unir.orden.dto.ProductoDTO;
 import com.unir.orden.dto.ProductoRequest;
 import com.unir.orden.dto.ProductoResponse;
 import com.unir.orden.exception.ClienteNoEncontradoException;
+import com.unir.orden.exception.OrdenInvalidaException;
 import com.unir.orden.exception.ProductoErrorServerException;
 import com.unir.orden.exception.ProductoNoDisponibleException;
 import com.unir.orden.exception.ProductoNoEncontradoException;
@@ -47,13 +48,15 @@ public class OrdenService {
     }
 
     public List<Orden> obtenerOrdenCliente(String cedula) {
-        if(ordenRepository.existsByNumDocumentoComprador(cedula)){
-           return ordenRepository.findByNumDocumentoComprador(cedula);
+        if (ordenRepository.existsByNumDocumentoComprador(cedula)) {
+            return ordenRepository.findByNumDocumentoComprador(cedula);
         }
-        throw new ClienteNoEncontradoException("No se encontraron ordenes asociadas al cliente con documento:" + cedula);
+        throw new ClienteNoEncontradoException(
+                "No se encontraron ordenes asociadas al cliente con documento:" + cedula);
     }
 
     public String crearOrden(OrdenRequest request) {
+        validarOrden(request);
         BigDecimal totalOrden = BigDecimal.ZERO;
         List<ProductoResponse> productosValidados = new ArrayList<>();
         for (ProductoRequest p : request.getIdProductos()) {
@@ -95,7 +98,7 @@ public class OrdenService {
     public Orden actualizarOrden(Long id, Orden newOrden) {
         BigDecimal totalOrden = BigDecimal.ZERO;
         Orden orden = ordenRepository.findById(id).orElseThrow(
-        () -> new ProductoNoEncontradoException("La orden con ID " + id + " no fue encontrada.", null));
+                () -> new ProductoNoEncontradoException("La orden con ID " + id + " no fue encontrada.", null));
 
         orden.setNombreComprador(newOrden.getNombreComprador());
         orden.setNumDocumentoComprador(newOrden.getNumDocumentoComprador());
@@ -105,7 +108,7 @@ public class OrdenService {
             BigDecimal subtotal = producto.getPrecioVenta().multiply(BigDecimal.valueOf(p.getCantidad()));
             totalOrden = totalOrden.add(subtotal);
         }
-        
+
         orden.setIdProductos(newOrden.getIdProductos());
         orden.setPrecioCompra(totalOrden);
         orden.setFechaCompra(LocalDate.now());
@@ -132,9 +135,21 @@ public class OrdenService {
             logger.severe(errorMessage);
             throw new ProductoNoEncontradoException(errorMessage, e);
         } catch (FeignException e) {
-            //logger.severe("Error al consultar el producto con ID " + id + ": " + e.getMessage());
-            throw new ProductoErrorServerException(e.getMessage(),e.getCause());
+            // logger.severe("Error al consultar el producto con ID " + id + ": " +
+            // e.getMessage());
+            throw new ProductoErrorServerException(e.getMessage(), e.getCause());
         }
         return producto;
+    }
+
+    private void validarOrden(OrdenRequest request) {
+        for (ProductoRequest producto : request.getIdProductos()) {
+            if (producto.getIdProducto() == null) {
+                throw new OrdenInvalidaException("El id del producto es obligatorio.");
+            }
+            if (producto.getCantidad() == null || producto.getCantidad() < 0) {
+                throw new OrdenInvalidaException("La cantidad del producto no puede ser negativo ni nulo.");
+            }
+        }
     }
 }
