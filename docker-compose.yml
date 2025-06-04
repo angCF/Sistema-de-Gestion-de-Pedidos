@@ -30,8 +30,8 @@ services:
     ordenes:
         build: ./Microservicios/orden
         container_name: ordenes
-        ports:
-            - "9060:9060"
+        expose:
+            - '9060'
         environment:
             - DATABASE_URL=jdbc:mysql://mysql-db:3306/product_now
             - DATABASE_USERNAME=appuser
@@ -48,8 +48,8 @@ services:
     productos:
         build: ./Microservicios/producto
         container_name: productos
-        ports:
-          - "9070:9070"
+        expose:
+          - '9070'
         networks:
             - 'mynet'
         environment:

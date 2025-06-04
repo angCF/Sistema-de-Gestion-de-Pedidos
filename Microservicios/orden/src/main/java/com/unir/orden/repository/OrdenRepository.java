@@ -9,5 +9,6 @@ import com.unir.orden.models.Orden;
 
 @Repository
 public interface OrdenRepository extends JpaRepository<Orden,Long> {
-    public abstract List<Orden> findByNumDocumentoComprador(String cedula);    
+    public abstract List<Orden> findByNumDocumentoComprador(String cedula); 
+    public abstract Boolean existsByNumDocumentoComprador(String cedula);   
 }

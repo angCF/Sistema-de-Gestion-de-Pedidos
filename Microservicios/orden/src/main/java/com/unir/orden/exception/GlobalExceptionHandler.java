@@ -15,6 +15,12 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    @ExceptionHandler(ClienteNoEncontradoException.class)
+    public ResponseEntity<?> handleClienteNoEncontrado(ClienteNoEncontradoException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+
     @ExceptionHandler(ProductoNoDisponibleException.class)
     public ResponseEntity<?> handleProductoNoDisponible(ProductoNoDisponibleException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)

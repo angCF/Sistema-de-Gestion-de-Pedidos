@@ -13,8 +13,8 @@ RUN ls -la /app-src/target
 FROM azul/zulu-openjdk-alpine:21 AS server
 RUN apk add --no-cache netcat-openbsd
 
-ENV SERVER_PORT=9060
-EXPOSE ${SERVER_PORT}
+#ENV SERVER_PORT=9060
+#EXPOSE ${SERVER_PORT}
 WORKDIR /
 
 VOLUME /tmp

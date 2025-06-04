@@ -15,6 +15,7 @@ import com.unir.orden.dto.OrdenResponse;
 import com.unir.orden.dto.ProductoDTO;
 import com.unir.orden.dto.ProductoRequest;
 import com.unir.orden.dto.ProductoResponse;
+import com.unir.orden.exception.ClienteNoEncontradoException;
 import com.unir.orden.exception.ProductoErrorServerException;
 import com.unir.orden.exception.ProductoNoDisponibleException;
 import com.unir.orden.exception.ProductoNoEncontradoException;
@@ -46,7 +47,10 @@ public class OrdenService {
     }
 
     public List<Orden> obtenerOrdenCliente(String cedula) {
-        return ordenRepository.findByNumDocumentoComprador(cedula);
+        if(ordenRepository.existsByNumDocumentoComprador(cedula)){
+           return ordenRepository.findByNumDocumentoComprador(cedula);
+        }
+        throw new ClienteNoEncontradoException("No se encontraron ordenes asociadas al cliente con documento:" + cedula);
     }
 
     public String crearOrden(OrdenRequest request) {
