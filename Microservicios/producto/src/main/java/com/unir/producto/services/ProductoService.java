@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.unir.producto.model.Producto;
 import com.unir.producto.repository.ProductoRepository;
-import com.unir.producto.exception.ProductoNoDisponibleException;
 import com.unir.producto.exception.ProductoNoEncontradoException;
-import com.unir.producto.exception.ProductoValidadoException;
+import com.unir.producto.mapper.ProductoMapper;
+import com.unir.producto.dto.ProductoRequestDTO;
+import com.unir.producto.dto.ProductoResponseDTO;
+import com.unir.producto.exception.ProductoInvalidoException;
 
 @Service
 public class ProductoService {
@@ -20,6 +22,9 @@ public class ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
 
+    @Autowired
+    private ProductoMapper mapper;
+
     public List<Producto> obtenerProductos() {
         logger.info("Obteniendo todos los productos.");
         return productoRepository.findAll();
@@ -28,7 +33,7 @@ public class ProductoService {
     public Producto obtenerProductoId(Long id) {
         logger.info("Buscando producto con ID: " + id);
         Producto producto = productoRepository.findById(id).orElseThrow(
-                () -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado.", null));
+                () -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado."));
         return producto;
     }
 
@@ -37,82 +42,84 @@ public class ProductoService {
         return productoRepository.findByNombre(nombre);
     }
 
-    public Producto agregarProducto(Producto producto) {
-        logger.info("Agregando nuevo producto: " + producto.getNombre());
-        // validarProducto(producto);
-        return productoRepository.save(producto);
+    private void validarProducto(ProductoRequestDTO productoReq) {
+        if (productoReq.getNombre() == null || productoReq.getNombre().isBlank()) {
+            throw new ProductoInvalidoException("El nombre del producto es obligatorio.");
+        }
+
+        if (productoReq.getPrecioVenta() == null || productoReq.getPrecioVenta().doubleValue() < 0) {
+            throw new ProductoInvalidoException("El precio del producto no puede ser negativo ni nulo.");
+        }
+
+        if (productoReq.getStock() == null || productoReq.getStock() < 0) {
+            throw new ProductoInvalidoException("El stock no puede ser negativo ni nulo.");
+        }
     }
 
-    public Producto actualizarProducto(Long id, Producto prod) {
+    public ProductoResponseDTO agregarProducto(ProductoRequestDTO productoReq) {
+        validarProducto(productoReq);
+        Producto producto = mapper.requestToProducto(productoReq);
+        productoRepository.save(producto);
+        return mapper.productoToResponse(producto);
+    }
+
+    public ProductoResponseDTO actualizarProducto(Long id, ProductoRequestDTO productoReq) {
         logger.info("Actualizando producto con ID: " + id);
+
+        validarProducto(productoReq);
+
         Producto producto = productoRepository.findById(id)
-                .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado.", null));
+                .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado."));
 
-        // validarProducto(prod);
+        producto.setNombre(productoReq.getNombre());
+        producto.setDescripcion(productoReq.getDescripcion());
+        producto.setPrecioVenta(productoReq.getPrecioVenta());
+        producto.setStock(productoReq.getStock());
 
-        producto.setNombre(prod.getNombre());
-        producto.setDescripcion(prod.getDescripcion());
-        producto.setPrecioVenta(prod.getPrecioVenta());
-        producto.setStock(prod.getStock());
+        productoRepository.save(producto);
 
-        return productoRepository.save(producto);
+        return mapper.productoToResponse(producto);
     }
 
     public String eliminarProducto(Long id) {
         logger.info("Eliminando producto con ID: " + id);
         if (!productoRepository.existsById(id)) {
-            throw new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado.", null);
+            throw new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado.");
         }
         productoRepository.deleteById(id);
         return "El producto con ID " + id + " ha sido eliminado satisfactoriamente.";
     }
 
-    private void validarProducto(Producto producto) {
-        if (producto.getNombre() == null || producto.getNombre().isEmpty()) {
-            logger.warning("Validación fallida: nombre vacío.");
-            throw new ProductoValidadoException("El nombre del producto es obligatorio.", null);
-        }
-        if (producto.getPrecioVenta() == null || producto.getPrecioVenta().doubleValue() < 0) {
-            logger.warning("Validación fallida: precio negativo.");
-            throw new ProductoValidadoException("El precio del producto no puede ser negativo.", null);
-        }
-        if (producto.getStock() == null || producto.getStock() < 0) {
-            logger.warning("Validación fallida: stock negativo.");
-            throw new ProductoValidadoException("El stock no puede ser negativo.", null);
-        }
-    }
-
-    public Producto agregarStock(Long id, int cantidad) {
+    public ProductoResponseDTO agregarStock(Long id, int cantidad) {
         logger.info("Agregando stock al producto con ID: " + id + ", cantidad: " + cantidad);
-        Producto producto = productoRepository.findById(id)
-                .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado.", null));
 
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado."));
+        
         if (cantidad <= 0) {
             logger.warning("Cantidad inválida para agregar stock: " + cantidad);
-            throw new ProductoValidadoException("La cantidad a agregar debe ser mayor que cero.", null);
+            throw new ProductoInvalidoException("La cantidad a agregar debe ser mayor que cero.");
         }
 
         producto.setStock((short) (producto.getStock() + cantidad));
-        return productoRepository.save(producto);
+        productoRepository.save(producto);
+
+        return mapper.productoToResponse(producto);
     }
 
-    public Producto quitarStock(Long id, int cantidad) {
+    public ProductoResponseDTO quitarStock(Long id, int cantidad) {
         logger.info("Quitando stock al producto con ID: " + id + ", cantidad: " + cantidad);
         Producto producto = productoRepository.findById(id)
-                .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado.", null));
+                .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado."));
 
         if (cantidad <= 0) {
             logger.warning("Cantidad inválida para quitar stock: " + cantidad);
-            throw new ProductoValidadoException("La cantidad a quitar debe ser mayor que cero.", null);
-        }
-
-        if (producto.getStock() < cantidad) {
-            logger.warning("Stock insuficiente. Disponible: " + producto.getStock() + ", solicitado: " + cantidad);
-            throw new ProductoNoDisponibleException("No hay suficiente stock para quitar " + cantidad + " unidades.");
+            throw new ProductoInvalidoException("La cantidad a quitar debe ser mayor que cero.");
         }
 
         producto.setStock((short) (producto.getStock() - cantidad));
-        return productoRepository.save(producto);
-    }
+        productoRepository.save(producto);
 
+        return mapper.productoToResponse(producto);
+    }
 }

@@ -49,7 +49,7 @@ services:
         build: ./Microservicios/producto
         container_name: productos
         ports:
-          - "9070:9070"
+            - "9070:9070"
         networks:
             - 'mynet'
         environment:
@@ -73,7 +73,7 @@ services:
         volumes:
             - mysql-data:/var/lib/mysql  # Persiste los datos
         ports:
-            - "3306:3306"
+            - "3308:3308"
         networks:
             - 'mynet'
 

@@ -8,21 +8,8 @@ import feign.FeignException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(ProductoNoEncontradoException.class)
-    public ResponseEntity<?> handleProductoNoEncontrado(ProductoNoEncontradoException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
-    }
-
-    @ExceptionHandler(ProductoNoDisponibleException.class)
-    public ResponseEntity<?> handleProductoNoDisponible(ProductoNoDisponibleException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(ex.getMessage());
-    }
-
-    @ExceptionHandler(ProductoErrorServerException.class)
-    public ResponseEntity<?> handleProductoErrorServer(ProductoErrorServerException ex) {
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleProductoErrorServer(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ex.getMessage());
     }
