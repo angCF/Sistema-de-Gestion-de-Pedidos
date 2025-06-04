@@ -7,8 +7,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ProductoNoEncontradoException.class)

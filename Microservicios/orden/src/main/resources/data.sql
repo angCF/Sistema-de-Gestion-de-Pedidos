@@ -11,4 +11,3 @@ INSERT IGNORE INTO ids_productos (id_orden, id_producto, nombre_producto, cantid
 (2, 2, 'Ford Mustang GT', 1),
 (3, 1, 'Harry Potter y la piedra filosofal - J.K. Rowling', 1),
 (3, 3, 'Sony PlayStation 5', 2);
-

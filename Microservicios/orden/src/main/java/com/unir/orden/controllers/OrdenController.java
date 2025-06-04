@@ -31,7 +31,7 @@ public class OrdenController {
     private OrdenService ordenService;
 
     @GetMapping()
-    public ResponseEntity<List<Orden>> obtenerOdenes(@RequestParam(required = false) String numCedula) {
+    public ResponseEntity<List<Orden>> obtenerOdenes() {
         List<Orden> ordenes = ordenService.obtenerOrdenes();
         return ResponseEntity.ok(ordenes);
     }
