@@ -6,7 +6,7 @@ import com.unir.producto.model.Producto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring") // Para inyectarlo como Bean
+@Mapper(componentModel = "spring")
 public interface ProductoMapper {
     @Mapping(target = "id", ignore = true)
     Producto requestToProducto(ProductoRequestDTO request);

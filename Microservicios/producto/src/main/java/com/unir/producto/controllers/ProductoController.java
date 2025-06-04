@@ -36,19 +36,19 @@ public class ProductoController {
         return productoService.obtenerProductoId(id);
     }
 
-    @GetMapping("/nombre")
-    public Producto obtenerProductoNombre(@RequestParam String name) {
-        return productoService.obtenerProductoNombre(name);
+    @GetMapping("/nombre/{nombre}")
+    public Producto obtenerProductoNombre(@PathVariable String nombre) {
+        return productoService.obtenerProductoNombre(nombre);
     }
 
     @PostMapping()
-    public ProductoResponseDTO agregarProducto(@Valid @RequestBody ProductoRequestDTO producto) {
-        return productoService.agregarProducto(producto);
+    public ProductoResponseDTO agregarProducto(@Valid @RequestBody ProductoRequestDTO productoReq) {
+        return productoService.agregarProducto(productoReq);
     }
 
     @PutMapping("/{id}")
-    public ProductoResponseDTO actualizaProducto(@PathVariable Long id, @RequestBody ProductoRequestDTO Producto) {
-        return productoService.actualizarProducto(id, Producto);
+    public ProductoResponseDTO actualizaProducto(@PathVariable Long id, @RequestBody ProductoRequestDTO productoReq) {
+        return productoService.actualizarProducto(id, productoReq);
     }
 
     @PutMapping("/{id}/agregar-stock")
