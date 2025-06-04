@@ -1,10 +1,10 @@
-# App-Gesti-n-de-Inventario
-App con arquitectura de microservicios diseñada para brindar funcionalidades básicas de un sistema gestor de inventario.
+# Sistema de Gestión de Pedidos Simplificado
+Aplicación con arquitectura de microservicios diseñada para brindar funcionalidades básicas de un sistema gestor de pedidos simplificado
 
 ### 📦 Requisitos Previos
 Docker + Docker Compose
 
-(Opcional) Java 17+ y Maven para ejecución local
+(Opcional) Java 21+ y Maven para ejecución local
 
 ### 🚀 Ejecución con Docker Compose
 ```console
