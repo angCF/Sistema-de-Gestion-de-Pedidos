@@ -1,33 +1,35 @@
 package com.unir.producto.exception;
 
+import com.unir.producto.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(ProductoNoEncontradoException.class)
-    public ResponseEntity<?> handleProductoNoEncontrado(ProductoNoEncontradoException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-        .body(ex.getMessage());
+    public ResponseEntity<ErrorResponse> handleProductoNoEncontrado(ProductoNoEncontradoException ex) {
+        return new ResponseEntity<>(new ErrorResponse(404, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ProductoValidadoException.class)
-    public ResponseEntity<?> handleProductoValidado(ProductoValidadoException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-        .body( ex.getMessage());
+    @ExceptionHandler(ProductoInvalidoException.class)
+    public ResponseEntity<ErrorResponse> handleProductoInvalido(ProductoInvalidoException ex) {
+        return new ResponseEntity<>(new ErrorResponse(400, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ProductoNoDisponibleException.class)
-    public ResponseEntity<?> handleProductoNoDisponible(ProductoNoDisponibleException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-        .body(ex.getMessage());
-    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
+        String mensaje = ex.getBindingResult()
+            .getFieldErrors()
+            .stream()
+            .map(error -> error.getField() + ": " + error.getDefaultMessage())
+            .findFirst()
+            .orElse("Datos inválidos.");
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleGeneral(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body("Error interno:" + ex.getMessage());
+        return new ResponseEntity<>(new ErrorResponse(400, mensaje), HttpStatus.BAD_REQUEST);
     }
 }
