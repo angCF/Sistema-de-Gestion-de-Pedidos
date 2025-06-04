@@ -6,7 +6,7 @@ services:
             - 8888:8888
         networks:
             - 'mynet'
- 
+
     eureka:
         build: ./Gateway/eureka-server
         container_name: eureka
@@ -36,13 +36,12 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/product_now
             - SPRING_DATASOURCE_USERNAME=appuser
             - SPRING_DATASOURCE_PASSWORD=apppass
-        #    - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
         depends_on:
             - config
             - eureka
             - gateway
             - productos
-            - mysql-db  # Espera a que la base de datos MySQL esté lista antes de arrancar el servicio
+            - mysql-db
         networks:
             - 'mynet'
     productos:
@@ -61,13 +60,13 @@ services:
             - config
             - eureka
             - gateway
-            - mysql-db-products  # Espera a que la base de datos MySQL esté lista antes de arrancar el servicio        
+            - mysql-db-products  
 
     mysql-db:
         image: mysql:8.0
         environment:
             MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: product_now # El nombre de la base de datos
+            MYSQL_DATABASE: gestion_orden 
             MYSQL_USER: appuser
             MYSQL_PASSWORD: apppass
         volumes:
@@ -83,8 +82,10 @@ services:
         networks:
             - 'mynet'
         environment:
-            MYSQL_ROOT_PASSWORD: rootpassword
-            MYSQL_DATABASE: movie_now  # El nombre de la base de datos que quieres crear
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: gestion_producto 
+            MYSQL_USER: productosuser
+            MYSQL_PASSWORD: productospass
         volumes:
             - ./init-producto.sql:/docker-entrypoint-initdb.d/init-producto.sql
             - mysql-data-products:/var/lib/mysql
@@ -92,8 +93,8 @@ services:
             - "3307:3306"
 
 volumes:
-    mysql-data:  # Este volumen se usa para persistir la base de datos entre reinicios
-    mysql-data-products:  # Este volumen se usa para persistir la base de datos entre reinicios
+    mysql-data: 
+    mysql-data-products:
 networks:
     mynet:
         driver: bridge

@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS ids_productos (
   nombre_producto VARCHAR(255),
   cantidad INT,
   PRIMARY KEY (id_orden, id_producto),
-  CONSTRAINT fk_ids_productos_orden FOREIGN KEY (id_orden) REFERENCES orden(id_orden)
-  -- CONSTRAINT fk_ids_productos_producto FOREIGN KEY (id_producto) REFERENCES producto(id_producto)
+  CONSTRAINT fk_ids_productos_orden FOREIGN KEY (id_orden) REFERENCES orden(id_orden) -- Revisar qué pasa si se quita
 );
 
 INSERT IGNORE INTO ids_productos (id_orden, id_producto, nombre_producto, cantidad) VALUES
