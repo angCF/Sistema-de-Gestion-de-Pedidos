@@ -6,9 +6,15 @@ Docker + Docker Compose
 
 (Opcional) Java 21+ y Maven para ejecución local
 
+### 🔐 Configuración del archivo .env
+Antes de levantar los servicios, copia el archivo de ejemplo **.env.example** a un nuevo archivo llamado **.env** en la raíz del proyecto.
+
+### 🔧 Ajusta los valores según tus necesidades.
+Este archivo contiene las credenciales y configuraciones necesarias para levantar las bases de datos MySQL de los microservicios.
+
 ### 🚀 Ejecución con Docker Compose
 ```console
-docker-compose up --build
+docker-compose --env-file .env up --build
 ```
 Esto construirá y levantará todos los microservicios junto con el servidor Eureka.
 
