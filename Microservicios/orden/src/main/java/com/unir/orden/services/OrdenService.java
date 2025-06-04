@@ -151,5 +151,11 @@ public class OrdenService {
                 throw new OrdenInvalidaException("La cantidad del producto no puede ser negativo ni nulo.");
             }
         }
+        if (request.getNombreComprador() == null || request.getNombreComprador().isBlank()) {
+            throw new OrdenInvalidaException("El nombre del comprador no puede ser nulo ni vacío.");
+        }
+        if (request.getNumDocumentoComprador() == null || request.getNumDocumentoComprador().isBlank()) {
+            throw new OrdenInvalidaException("El numero de documento del comprador no puede ser nulo ni vacío.");
+        }
     }
 }
