@@ -1,0 +1,427 @@
+{
+	"info": {
+		"_postman_id": "d12221c0-544d-424b-94f7-8c3b752a5355",
+		"name": "Sistema de Pedidos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18053304",
+		"_collection_link": "https://mimoq-puj.postman.co/workspace/UNIR~0fa9c21f-a099-4892-b678-666ee6f4c314/collection/18053304-d12221c0-544d-424b-94f7-8c3b752a5355?action=share&source=collection_link&creator=18053304"
+	},
+	"item": [
+		{
+			"name": "Orden",
+			"item": [
+				{
+					"name": "Info orden",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orden/8",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listado Ordenes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orden",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Info cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orden/cliente/214334",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden",
+								"cliente",
+								"214334"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear orden",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"numDocumentoComprador\": \"795849\",\r\n  \"nombreComprador\": \"Latty Marcel\",\r\n  \"idProductos\": [\r\n    {\r\n      \"idProducto\": 2,\r\n      \"cantidad\": 12\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/orden",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar orden",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idProductos\": [\r\n    {\r\n      \"idProducto\": 1,\r\n      \"cantidad\": 1\r\n    },\r\n    {\r\n      \"idProducto\": 2,\r\n      \"cantidad\": 1\r\n    }\r\n  ],\r\n  \"numDocumentoComprador\": \"12345678\",\r\n  \"nombreComprador\": \"Juan Pérez\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/orden/8",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar orden",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/orden/10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Producto",
+			"item": [
+				{
+					"name": "Info producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/producto/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"producto",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listado Productos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/producto",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"producto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Mouse inlambrico\",\r\n  \"descripcion\": \"Mouse inlambrico Lenovo\",\r\n  \"precioVenta\": 12.23,\r\n  \"stock\": 13\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/producto",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"producto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar producto",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Laptop Lenovo\",\r\n    \"descripcion\": \"Ultrabook con 16GB RAM y 512GB SSD\",\r\n    \"precioVenta\": 1500.90,\r\n    \"stock\": 25\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/producto/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"producto",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar stock",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/producto/1/agregar-stock?cantidad=5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"producto",
+								"1",
+								"agregar-stock"
+							],
+							"query": [
+								{
+									"key": "cantidad",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disminuir stock",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/producto/1/quitar-stock?cantidad=5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"producto",
+								"1",
+								"quitar-stock"
+							],
+							"query": [
+								{
+									"key": "cantidad",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar producto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/producto/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"producto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Info producto x nombre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/producto/nombre/Ford Mustang GT",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"producto",
+								"nombre",
+								"Ford Mustang GT"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:8080/api",
+			"type": "string"
+		}
+	]
+}
