@@ -39,7 +39,10 @@ public class ProductoService {
 
     public Producto obtenerProductoNombre(String nombre) {
         logger.info("Buscando producto con nombre: " + nombre);
-        return productoRepository.findByNombre(nombre);
+        if (productoRepository.existsByNombre(nombre)) {
+            return productoRepository.findByNombre(nombre);
+        }
+        throw new ProductoNoEncontradoException("El producto con nombre: " + nombre + " no fue encontrado.");
     }
 
     private void validarProducto(ProductoRequestDTO productoReq) {
@@ -69,7 +72,8 @@ public class ProductoService {
         validarProducto(productoReq);
 
         Producto producto = productoRepository.findById(id)
-                .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado."));
+                .orElseThrow(
+                        () -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado."));
 
         producto.setNombre(productoReq.getNombre());
         producto.setDescripcion(productoReq.getDescripcion());
@@ -94,8 +98,9 @@ public class ProductoService {
         logger.info("Agregando stock al producto con ID: " + id + ", cantidad: " + cantidad);
 
         Producto producto = productoRepository.findById(id)
-                .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado."));
-        
+                .orElseThrow(
+                        () -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado."));
+
         if (cantidad <= 0) {
             logger.warning("Cantidad inválida para agregar stock: " + cantidad);
             throw new ProductoInvalidoException("La cantidad a agregar debe ser mayor que cero.");
@@ -110,7 +115,8 @@ public class ProductoService {
     public ProductoResponseDTO quitarStock(Long id, int cantidad) {
         logger.info("Quitando stock al producto con ID: " + id + ", cantidad: " + cantidad);
         Producto producto = productoRepository.findById(id)
-                .orElseThrow(() -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado."));
+                .orElseThrow(
+                        () -> new ProductoNoEncontradoException("El producto con ID " + id + " no fue encontrado."));
 
         if (cantidad <= 0) {
             logger.warning("Cantidad inválida para quitar stock: " + cantidad);

@@ -3,16 +3,16 @@ package com.unir.orden.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.unir.orden.dto.OrdenRequest;
-import com.unir.orden.exception.*;
+import com.unir.orden.dto.OrdenRequestDTO;
+import com.unir.orden.dto.OrdenResponseDTO;
 import com.unir.orden.models.Orden;
 import com.unir.orden.services.OrdenService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,44 +38,26 @@ public class OrdenController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerOrdenId(@PathVariable Long id) {
-        try {
-            Orden orden = ordenService.obtenerOrdenId(id);
-            return ResponseEntity.ok(orden);
-        } catch (ProductoNoEncontradoException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        Orden orden = ordenService.obtenerOrdenId(id);
+        return ResponseEntity.ok(orden);
     }
 
-    @GetMapping("/cliente")
-    public ResponseEntity<List<Orden>> obtenerOrdenCliente(@RequestParam String numCedula) {
-        List<Orden> ordenesCliente = ordenService.obtenerOrdenCliente(numCedula);
+    @GetMapping("/cliente/{numDocumento}")
+    public ResponseEntity<List<Orden>> obtenerOrdenCliente(@PathVariable String numDocumento) {
+        List<Orden> ordenesCliente = ordenService.obtenerOrdenCliente(numDocumento);
         return ResponseEntity.ok(ordenesCliente);
     }
 
     @PostMapping()
-    public ResponseEntity<?> crearOrden(@RequestBody OrdenRequest request) {
-        String response = ordenService.crearOrden(request);
+    public ResponseEntity<?> crearOrden(@Valid @RequestBody OrdenRequestDTO request) {
+        OrdenResponseDTO response = ordenService.crearOrden(request);
         return ResponseEntity.ok(response);
-        /*
-         * } catch (ProductoNoEncontradoException e) {
-         * return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-         * } catch (ProductoErrorServerException e) {
-         * return
-         * ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
-         * } catch (ProductoNoDisponibleException e) {
-         * return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-         * }
-         */
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarOrden(@PathVariable Long id, @RequestBody Orden orden) {
-        try {
-            Orden nuevaOrden = ordenService.actualizarOrden(id, orden);
-            return ResponseEntity.ok(nuevaOrden);
-        } catch (ProductoNoEncontradoException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public ResponseEntity<?> actualizarOrden(@PathVariable Long id, @Valid @RequestBody OrdenRequestDTO newRequest) {
+        OrdenResponseDTO nuevaOrden = ordenService.actualizarOrden(id, newRequest);
+        return ResponseEntity.ok(nuevaOrden);
     }
 
     @DeleteMapping("/{id}")

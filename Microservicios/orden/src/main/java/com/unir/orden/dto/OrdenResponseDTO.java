@@ -15,13 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrdenResponse {
-    private Long numeroOrden;
-    private List<ProductoResponse> productosOrden;
+public class OrdenResponseDTO {
+    private Long id;
     private String numDocumentoComprador;
     private String nombreComprador;
-    private BigDecimal precio;
+    private BigDecimal precioCompra;
     private LocalDate fechaCompra;
+    private List<OrdenItemResponseDTO> itemsOrden;
 
     @Override
     public String toString() {
