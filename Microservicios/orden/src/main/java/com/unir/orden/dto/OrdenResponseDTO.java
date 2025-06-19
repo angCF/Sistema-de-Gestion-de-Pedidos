@@ -26,15 +26,13 @@ public class OrdenResponseDTO {
     @Override
     public String toString() {
         ObjectMapper objectMapper = new ObjectMapper();
-        
-        // Registra el módulo JavaTimeModule para manejar LocalDate, LocalDateTime, etc.
         objectMapper.registerModule(new JavaTimeModule());
 
         try {
-            return objectMapper.writeValueAsString(this); // Convierte el objeto en JSON
+            return objectMapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            return "{}"; // Si ocurre un error, retorna un JSON vacío
+            return "{}";
         }
     }
 }

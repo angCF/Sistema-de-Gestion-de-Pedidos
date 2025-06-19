@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@RestController // Controlador REST que recibe y procesa peticiones
-@RequestMapping("/api/orden") // Endpoint de acceso
-@CrossOrigin(origins = "*") // Permite acceder desde cualquier IP a los endpoint
+@RestController
+@RequestMapping("/api/orden")
+@CrossOrigin(origins = "*")
 public class OrdenController {
 
     @Autowired

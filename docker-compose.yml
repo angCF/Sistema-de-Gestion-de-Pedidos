@@ -60,7 +60,17 @@ services:
             - config
             - eureka
             - gateway
-            - mysql-db-products  
+            - mysql-db-products 
+    # frontend:
+    #     build: ./frontend
+    #     container_name: frontend
+    #     ports:
+    #         - "5173:5173"
+    #     networks:
+    #         - 'mynet'
+    #     volumes:
+    #         - .:/app
+    #     command: npm run dev 
 
     mysql-db:
         image: mysql:8.0
