@@ -22,7 +22,6 @@ import com.unir.producto.services.ProductoService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/producto")
 public class ProductoController {
     @Autowired
