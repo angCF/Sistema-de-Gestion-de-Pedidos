@@ -1,0 +1,15 @@
+.modal-content-custom {
+  width: 600px;
+  max-height: 80vh; /* Altura máxima para el modal */
+  background: white;
+  border-radius: 8px;
+  overflow: hidden; /* evita que el modal entero tenga scroll */
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body-scrollable {
+  overflow-y: auto;
+  padding: 16px;
+  flex-grow: 1;
+}

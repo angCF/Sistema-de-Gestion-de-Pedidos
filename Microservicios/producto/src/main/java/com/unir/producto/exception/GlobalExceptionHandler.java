@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         String mensaje = ex.getBindingResult()
             .getFieldErrors()
             .stream()
-            .map(error -> error.getField() + ": " + error.getDefaultMessage())
+            .map(error -> error.getDefaultMessage())
             .findFirst()
             .orElse("Datos inválidos.");
 
