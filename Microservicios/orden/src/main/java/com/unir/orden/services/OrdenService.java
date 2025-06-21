@@ -145,7 +145,14 @@ public class OrdenService {
         Orden orden = ordenRepository.findById(id).orElseThrow(
                 () -> new ProductoNoEncontradoException("La orden con ID " + id + " no fue encontrada.", null));
         for (OrdenItemResponseDTO producto : orden.getItemsOrden()) {
-            clienteProductos.agregarStock(producto.getIdProducto(), producto.getCantidad());
+            try{
+                clienteProductos.agregarStock(producto.getIdProducto(), producto.getCantidad());
+            } catch (FeignException.NotFound e) {
+                String errorMessage = "El producto con ID " + id + " no fue encontrado.";
+                System.out.println(errorMessage);
+            } catch (FeignException e) {
+                throw new ProductoErrorServerException(e.getMessage(), e.getCause());
+            }
         }
         ordenRepository.deleteById(id);
         return "La orden con " + id + " ha sido cancelada satisfactoriamente.";
